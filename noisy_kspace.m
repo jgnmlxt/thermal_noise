@@ -17,6 +17,24 @@ images_arranged=reshape(images,repetition,[]);
 figure;
 imshow(squeeze(images(1,:,:)));
 
+%%
+
+GT_shape=zeros(1,dimension,dimension);
+GT_shape(1,:,:)=GT;
+offsets=images-GT_shape;
+
+sum_offsets=sum(offsets,"all");
+disp(sum_offsets);
+sum(images(1,:,:)-GT_shape,"all");
+
+arranged_offsets=reshape(offsets,1,[]);
+figure;
+histogram(abs(arranged_offsets));
+figure;
+histogram(real(arranged_offsets));
+pd=fitdist(imag(squeeze(arranged_offsets')),'Normal');
+disp(pd);
+
 %% 
 
 mean=sum(images_arranged,2)/dimension^2;
@@ -46,9 +64,3 @@ disp(MSE);
 MSE=real((sum(((recon)-(GT)).^2,"all")/(dimension^2))^(1/2));
 disp(MSE);
 
-GT_shape=zeros(1,dimension,dimension);
-GT_shape(1,:,:)=GT;
-offsets=images-GT_shape;
-sum_offsets=sum(offsets,"all")
-
-sum(images(1,:,:)-GT_shape,"all")
